@@ -23,7 +23,11 @@ public class block : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (PC == null) {
-			PC = this.transform.parent.parent.GetComponent<PlayerHandler>();
+			if (this.transform.parent.gameObject.tag == "Tetris") {
+				PC = this.transform.parent.parent.GetComponent<PlayerHandler>();
+			} else {
+				PC = this.transform.parent.GetComponent<PlayerHandler>();
+			}
 		} else {
 			if (this.transform.parent.gameObject.tag == "Tetris") {
 				if (this.transform.parent.GetComponent<TetriminoHandler>().isPreview) {

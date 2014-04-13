@@ -11,7 +11,7 @@ public class GameHandler : MonoBehaviour {
 	public GameObject blockPrefab;
 	public GameObject playerPrefab;
 	public static float BLOCK_SIZE = 15;
-	private GameObject FloorObject;
+	public GameObject FloorObject;
 	public static Vector3 FLOOR_MIN;
 	public static Vector3 FLOOR_MAX;
 	public static float PRIORITY_DECAY_PERIOD = 2.0f;
@@ -48,12 +48,8 @@ public class GameHandler : MonoBehaviour {
 		GAME_STATUS = Game.WAITING;
 		this.networkView.group = 31;		// GameHandler only sends data to other GameHandlers
         Network.isMessageQueueRunning = true;
-		FloorObject = GameObject.FindWithTag("Floor");
 
 		setFloorTiling();
-
-		FLOOR_MIN = FloorObject.renderer.bounds.min;
-		FLOOR_MAX = FloorObject.renderer.bounds.max;
 	}
 
 	void Update () {
@@ -259,9 +255,12 @@ public class GameHandler : MonoBehaviour {
 	}
 
 	private void setFloorTiling() {
-		float tilingScale = (FloorObject.transform.parent.localScale.x * FloorObject.transform.localScale.x) / BLOCK_SIZE;
+		float tilingScale = (FloorObject.transform.lossyScale.x) / BLOCK_SIZE;
 		
 		FloorObject.renderer.material.mainTextureScale = new Vector2(tilingScale, tilingScale);
+
+		FLOOR_MIN = FloorObject.renderer.bounds.min;
+		FLOOR_MAX = FloorObject.renderer.bounds.max;
 	}
 
 	public static bool isInBounds(Vector3 test) {

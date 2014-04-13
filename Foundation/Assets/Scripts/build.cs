@@ -45,7 +45,7 @@ public class build : MonoBehaviour {
 					case Gesture.CLICK:
 						// CLICK gesture detected
 						RaycastHit hit;
-						if (Physics.Raycast(PC.GestureHandler.CurrentRay, out hit)) {
+						if (Physics.Raycast(PC.GestureHandler.CurrentRay, out hit, Mathf.Infinity, ~(1 << 8))) {
 							if (debug) 	print("clicked on " + hit.transform.gameObject.tag);
 							TetriminoHandler selectedTetrimino = selectedTetris.GetComponent<TetriminoHandler>();
 							if (hit.transform.gameObject.tag == "Block" && hit.transform.gameObject.GetComponent<block>().PC == this.PC) {

@@ -9,15 +9,19 @@ public class GestureHandler : MonoBehaviour {
 	public Ray CurrentRay;					// The current Ray from the camera (set only to update during "CLICK" gestures)
 	private float delayCount;				// Could be used during "CLICK" gestures to determine whether user is performing a dragging motion or an accidental touch 
 	private float scrollThreshold = 10;		// Used to define the minimum length of a two-finger scroll gesture in order to be recognized by the game
+	private PlayerHandler PC;
 
 	void Start () {
+		PC = this.gameObject.GetComponent<PlayerHandler>();
 		CurrentGesture = Gesture.NOTHING;
 		delayCount = 0;
 	}
 	
 	void Update () {
 		// Update CurrentGesture and CurrentRay every frame
-		getInput();
+		if (PC.isThisPlayer) {
+			getInput();
+		}
 	}
 
 	private void getInput() {

@@ -4,14 +4,17 @@ using System.Collections;
 public class PlayerHandler : MonoBehaviour {
 	public int PLAYER_NUM;
 	public bool isThisPlayer;
+	
+	public GestureHandler GestureHandler;
 	public build BuildController;
 	public LemmingController LemmingController;
-	public GestureHandler GestureHandler;
 
 	// Use this for initialization
 	void Start () {
+		GestureHandler = this.GetComponent<GestureHandler>();
 		BuildController = this.GetComponent<build>();
 		LemmingController = this.GetComponent<LemmingController>();
+		this.networkView.group = this.PLAYER_NUM;	// Player-specific messages only sent to this player's group
 	}
 	
 	// Update is called once per frame
@@ -19,13 +22,33 @@ public class PlayerHandler : MonoBehaviour {
 		
 	}
 
-	public void AddGestures() {
-		GestureHandler = this.gameObject.AddComponent("GestureHandler") as GestureHandler;
-		BuildController.GH = GestureHandler;
-	}
-
 	public void setAsPlayer() {
 		isThisPlayer = true;
-		AddGestures();
+	}
+
+	// BUILD NETWORKING FUNCTIONS
+	[RPC]
+	void SetTetrisType(int tetrisID) {
+		BuildController.selectedTetrisID = tetrisID;
+		Debug.Log("Build: SetTetrisType for Player " + PLAYER_NUM);
+	}
+
+	[RPC]
+	void SetTetrisLocation(Vector3 loc) {
+		BuildController.selectedTetrisLocation = loc;
+		Debug.Log("Build: SetTetrisLocation for Player " + PLAYER_NUM);
+	}
+
+	[RPC]
+	void SetTetrisRotation(Quaternion rot) {
+		BuildController.selectedTetrisRotation = rot;
+		Debug.Log("Build: SetTetrisRotation for Player " + PLAYER_NUM);
+	}
+
+	[RPC]
+	void CreateTetris() {
+		GameObject newTetris = BuildController.SpawnTetris();
+		newTetris.GetComponent<TetriminoHandler>().setPreview(false);
+		Debug.Log("Build: CreateTetris for Player " + PLAYER_NUM);
 	}
 }

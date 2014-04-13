@@ -16,10 +16,31 @@ public class GameHandler : MonoBehaviour {
 	public int PLAYER_NUM = 0;
 	public bool testBool = false;
 
+	/*public class PlayerInfo
+    {
+		// Network name of the player
+        public NetworkPlayer networkPlayer;
+
+        // Player GameObject in scene
+        public GameObject playerObject;
+
+        // BUILD INFO
+        public int selectedTetrisID;
+        public Vector3 selectedTetrisLocation;
+        public Quaternion selectedTetrisRotation;
+
+        public bool isLocal()
+        {
+            // If disconnected we are "-1"
+            return (Network.player == networkPlayer || Network.player + "" == "-1");
+        }
+    }*/
+
 	public Dictionary<NetworkPlayer, GameObject> playerList = new Dictionary<NetworkPlayer, GameObject>();
 
 	void Start () {
 		Instance = this;
+		this.networkView.group = 31;		// GameHandler only sends data to other GameHandlers
         Network.isMessageQueueRunning = true;
 		FloorObject = GameObject.FindWithTag("Floor");
 
@@ -31,11 +52,6 @@ public class GameHandler : MonoBehaviour {
 
 	void Update () {
 		if (Network.isServer) {
-			GameObject[] tetriminos = GameObject.FindGameObjectsWithTag("Tetris");
-			foreach (GameObject go in tetriminos) {
-				go.GetComponent<TetriminoHandler>().setPreview(false);
-			}
-
 			if (testBool) {
 				networkView.RPC("CreateLemming", RPCMode.All, 1);
 				testBool = false;
@@ -50,14 +66,51 @@ public class GameHandler : MonoBehaviour {
 		}
 	}
 
-	[RPC]
-	public void AddPlayer(NetworkPlayer networkPlayer) {
+	public void AddPlayerToServer(NetworkPlayer networkPlayer) {
 		NUM_PLAYERS++;
-		spawnOriginBlock(NUM_PLAYERS);
-		GameObject newPlayer = GameObject.Find("Player " + networkPlayer);
-		newPlayer.active = true;
-		playerList.Add(networkPlayer, newPlayer);
-		Debug.Log("AddPlayer: Player " + networkPlayer + " added.");
+
+		int playerNum = int.Parse("" + networkPlayer);
+		GameObject newPlayerObject = GameObject.Find("Player " + playerNum);
+		newPlayerObject.active = true;
+		newPlayerObject.GetComponent<PlayerHandler>().isThisPlayer = true;
+
+		//PlayerInfo pi = new PlayerInfo();
+		//pi.networkPlayer = networkPlayer;
+		//pi.playerObject = newPlayerObject;
+
+		playerList.Add(networkPlayer, newPlayerObject);
+		Debug.Log("AddPlayer: Player " + playerNum + " added.");
+	}
+
+	public void AddPlayersToClients() {
+		if (Network.isServer) {
+			foreach (KeyValuePair<NetworkPlayer, GameObject> entry in playerList) {
+				//Debug.Log("Key = " + entry.Key + ", Value = " + entry.Value);
+				networkView.RPC("AddPlayerToClient", RPCMode.Others, entry.Key);
+				spawnOriginBlock(int.Parse("" + entry.Key));
+			}
+		}
+	}
+
+	[RPC]
+	public void AddPlayerToClient(NetworkPlayer networkPlayer) {
+		if (Network.isClient) {
+			int playerNum = int.Parse("" + networkPlayer);
+			GameObject newPlayer = GameObject.Find("Player " + playerNum);
+			newPlayer.active = true;
+			playerList.Add(networkPlayer, newPlayer);
+
+			if (Network.player == networkPlayer) {
+				//PLAYER_NUM = int.Parse(networkPlayer);
+				newPlayer.GetComponent<PlayerHandler>().setAsPlayer();
+				PLAYER_NUM = playerNum;
+				Debug.Log("AddPlayerToClient: Player " + networkPlayer + " assigned.");
+			} else {
+				Debug.Log("AddPlayerToClient: Player " + networkPlayer + " added to Player " + Network.player + "'s playerList.");
+			}
+
+			spawnOriginBlock(playerNum);
+		}
 	}
 
 	/*[RPC]
@@ -175,16 +228,16 @@ public class GameHandler : MonoBehaviour {
 	public GameObject spawnOriginBlock(int playerNum) {
 		Vector3 corner = Vector3.zero;
 		switch (playerNum) {
-			case 1:
+			case 0:
 				corner = new Vector3(FloorObject.renderer.bounds.min.x + BLOCK_SIZE/2, FloorObject.transform.position.y + FloorObject.renderer.bounds.max.y + BLOCK_SIZE/2, FloorObject.renderer.bounds.min.z + BLOCK_SIZE/2);
 				break;
-			case 2:
+			case 1:
 				corner = new Vector3(FloorObject.renderer.bounds.max.x - BLOCK_SIZE/2, FloorObject.transform.position.y + FloorObject.renderer.bounds.max.y + BLOCK_SIZE/2, FloorObject.renderer.bounds.max.z - BLOCK_SIZE/2);
 				break;
-			case 3:
+			case 2:
 				corner = new Vector3(FloorObject.renderer.bounds.min.x + BLOCK_SIZE/2, FloorObject.transform.position.y + FloorObject.renderer.bounds.max.y + BLOCK_SIZE/2, FloorObject.renderer.bounds.max.z - BLOCK_SIZE/2);
 				break;
-			case 4:
+			case 3:
 				corner = new Vector3(FloorObject.renderer.bounds.max.x - BLOCK_SIZE/2, FloorObject.transform.position.y + FloorObject.renderer.bounds.max.y + BLOCK_SIZE/2, FloorObject.renderer.bounds.min.z + BLOCK_SIZE/2);
 				break;
 			default:

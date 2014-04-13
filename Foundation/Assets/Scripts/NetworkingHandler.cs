@@ -8,6 +8,7 @@ public class NetworkingHandler : MonoBehaviour {
 	private int NUM_PLAYERS = 0;
 	private string playersField = "1";
 	private bool hostButton, stopButton, connectButton, disconnectButton;
+	private string debugLog = "";
 
 	void OnGUI() {
 		if (Network.isServer) {
@@ -15,6 +16,7 @@ public class NetworkingHandler : MonoBehaviour {
 
 			GUILayout.Label("Hosting on " + Network.player.ipAddress);
 			GUILayout.Label(NUM_PLAYERS + " player(s) connected");
+			GUILayout.Label("Debug: " + debugLog);
 			stopButton = GUILayout.Button("Stop");
 
 			if (stopButton) {
@@ -25,6 +27,7 @@ public class NetworkingHandler : MonoBehaviour {
 			// Player connected to a server
 
 			GUILayout.Label("Connected to " + Network.player.ipAddress);
+			GUILayout.Label("Debug: " + debugLog);
 			disconnectButton = GUILayout.Button("Disconnect");
 
 			if (disconnectButton) {
@@ -73,30 +76,39 @@ public class NetworkingHandler : MonoBehaviour {
     void OnServerInitialized() 
 	{
 		Debug.Log("Server " + Network.player.ipAddress + ":" + Network.player.port + " initialized and ready");
-		GameHandler.Instance.AddPlayer(Network.player);
-	}
-
-	void OnPlayerConnected(NetworkPlayer player) 
-	{
-		Debug.Log("Player " + Network.player + " connected from " + Network.player.ipAddress + ":" + Network.player.port);
-		/*GameHandler.Instance.AddPlayerToServer(player);
+		GameHandler.Instance.AddPlayerToServer(Network.player);
 		if (GameHandler.Instance.NUM_PLAYERS == this.NUM_PLAYERS) {
 			Debug.Log("All players connected to server");
 			GameHandler.Instance.AddPlayersToClients();
-		}*/
+		}
 	}
 
-	void OnPlayerDisconnected(NetworkPlayer player) 
+	void OnPlayerConnected(NetworkPlayer networkPlayer) 
+	{
+		debugLog = "Player " + networkPlayer + " connected from " + networkPlayer.ipAddress + ":" + networkPlayer.port;
+		Debug.Log(debugLog);
+
+		GameHandler.Instance.AddPlayerToServer(networkPlayer);
+		if (GameHandler.Instance.NUM_PLAYERS == this.NUM_PLAYERS) {
+			Debug.Log("All players connected to server");
+			GameHandler.Instance.AddPlayersToClients();
+		}
+	}
+
+	void OnPlayerDisconnected(NetworkPlayer networkPlayer) 
 	{
 		//GameHandler.Instance.RemovePlayer(player);
 		//GameHandler.Instance.networkView.RPC("RemovePlayer", RPCMode.All, player);
-		Debug.Log("Player disconnected from: " + player.ipAddress + ":" + player.port + " = " + player);
+		debugLog = "Player disconnected from: " + networkPlayer.ipAddress + ":" + networkPlayer.port + " = " + networkPlayer;
+		Debug.Log(debugLog);
 	}
 
 	void OnConnectedToServer() 
 	{
-		Debug.Log ("This CLIENT has connected to server " + MasterServer.ipAddress + ":" + MasterServer.port);
-		GameHandler.Instance.networkView.RPC("AddPlayer", RPCMode.Server, Network.player);
+		debugLog = "This CLIENT has connected to server " + Network.player.ipAddress + ":" + Network.player.port;
+		Debug.Log(debugLog);
+
+		GameHandler.Instance.networkView.RPC("AddPlayerToServer", RPCMode.Server, Network.player);
 	}
 
 	void OnDisconnectedFromServer(NetworkDisconnection info) 
@@ -106,6 +118,7 @@ public class NetworkingHandler : MonoBehaviour {
 
 	void OnFailedToConnect(NetworkConnectionError error)
 	{
-		Debug.Log("Could not connect to server: " + error);
+		debugLog = "Could not connect to server: " + error;
+		Debug.Log(debugLog);
 	}
 }

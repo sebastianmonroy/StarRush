@@ -2,27 +2,27 @@
 using System.Collections;
 
 public class build : MonoBehaviour {
-	public GameObject TblockPrefab;
-	public GameObject LblockPrefab;
-	public GameObject ZblockPrefab;
-	public GameObject OblockPrefab;
-	public GameObject IblockPrefab;
+	public GameObject[] tetrisPrefabs;
 	public GameObject lemmingPrefab;
 
 	public float waitDuration;				// How long to wait between acknowledging gestures
 	private float waitCount;
 	public GameObject nextTetris;
 	private int nextTetrisID;
+
+	// CLIENT INFO
 	public GameObject selectedTetris;
+	private GameObject selectedBlock;
+	private GameObject selectedPreviewBlock;
+
+	// SERVER INFO
 	public int selectedTetrisID;
 	public Vector3 selectedTetrisLocation;
 	public Quaternion selectedTetrisRotation; 
-	private GameObject selectedBlock;
-	private GameObject selectedPreviewBlock;
+
 	public bool debug;
 
 	public PlayerHandler PC;
-	public GestureHandler GH;
 
 	void Start () {
 		PC = this.transform.GetComponent<PlayerHandler>();
@@ -37,15 +37,15 @@ public class build : MonoBehaviour {
 				getNextTetris();
 			}
 
-			if (waitCount >= waitDuration && GH != null) {
+			if (waitCount >= waitDuration && PC.GestureHandler != null) {
 				// Prevents multiple gestures from being registered when only one was intended
 				// Prevents any actions from being performed if there is no gesture handler
-				switch(GH.CurrentGesture) {
+				switch(PC.GestureHandler.CurrentGesture) {
 					// Handles performing certain "build" actions based on the user input detected in GestureHandler.cs
 					case Gesture.CLICK:
 						// CLICK gesture detected
 						RaycastHit hit;
-						if (Physics.Raycast(GH.CurrentRay, out hit)) {
+						if (Physics.Raycast(PC.GestureHandler.CurrentRay, out hit)) {
 							if (debug) 	print("clicked on " + hit.transform.gameObject.tag);
 							TetriminoHandler selectedTetrimino = selectedTetris.GetComponent<TetriminoHandler>();
 							if (hit.transform.gameObject.tag == "Block") {
@@ -72,10 +72,8 @@ public class build : MonoBehaviour {
 									selectedTetrimino.setPreview(false);
 									PC.LemmingController.addTetrimino(selectedTetris);
 									selectedBlock.GetComponent<block>().destroyPreview();
-									GameHandler.Instance.networkView.RPC("SetTetrisType", RPCMode.Others, selectedTetrisID);
-									GameHandler.Instance.networkView.RPC("SetTetrisLocation", RPCMode.Others, selectedTetris.transform.position);
-									GameHandler.Instance.networkView.RPC("SetTetrisRotation", RPCMode.Others, selectedTetris.transform.rotation);
-									GameHandler.Instance.networkView.RPC("CreateTetris", RPCMode.Others);
+									
+									PC.networkView.RPC("CreateTetris", RPCMode.Others);
 									getNextTetris();
 									waitCount = 0;
 								}
@@ -124,7 +122,7 @@ public class build : MonoBehaviour {
 						break;
 					case Gesture.SPACE_BAR:
 						// SPACE_BAR gesture detected
-						GameHandler.Instance.networkView.RPC("CreateLemming", RPCMode.All, PC.PLAYER_NUM);
+						//GameHandler.Instance.networkView.RPC("CreateLemming", RPCMode.All, PC.PLAYER_NUM);
 						break;
 					default:
 						break;
@@ -135,44 +133,34 @@ public class build : MonoBehaviour {
 		}
 	}
 
+
+
+
+
+
+
+
+
+
 	public void CorrectPrediction() {
 		Vector3 dir = selectedPreviewBlock.GetComponent<block_preview>().direction;
-		//print("direction = " + dir);
 		Vector3 offset = dir * selectedTetris.GetComponent<TetriminoHandler>().getOffset(dir);
-		//print("offset = " + offset);
 		selectedTetris.transform.position = selectedPreviewBlock.transform.position + offset;
-		//selectedTetrisLocation = selectedTetris.transform.position;
-		//selectedTetrisRotation = selectedTetris.transform.rotation;
+
+		selectedTetrisLocation = selectedTetris.transform.position;
+		selectedTetrisRotation = selectedTetris.transform.rotation;
+		PC.networkView.RPC("SetTetrisLocation", RPCMode.Others, selectedTetrisLocation);
+		PC.networkView.RPC("SetTetrisRotation", RPCMode.Others, selectedTetrisRotation);
 	}
 
 	public GameObject instantiateTetris(int tetrisID) {
-		GameObject tetrisObject;
-		switch (tetrisID) {
-			case 0:
-				tetrisObject = Instantiate(TblockPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-				break;
-			case 1:
-				tetrisObject = Instantiate(LblockPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-				break;
-			case 2:
-				tetrisObject = Instantiate(ZblockPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-				break;
-			case 3:
-				tetrisObject = Instantiate(OblockPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-				break;
-			case 4:
-				tetrisObject = Instantiate(IblockPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-				break;
-			default:
-				tetrisObject = Instantiate(LblockPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-				break;
-		}
+		GameObject tetrisObject = Instantiate(tetrisPrefabs[tetrisID]) as GameObject;
 		tetrisObject.transform.parent = this.transform;
 		return tetrisObject;
 	}
 
-	public GameObject createTetris() {
-		Debug.Log("create tetris");
+	public GameObject SpawnTetris() {
+		//Debug.Log("create tetris");
 		selectedTetris = instantiateTetris(selectedTetrisID);
 		selectedTetris.GetComponent<TetriminoHandler>().setPreview(false);
 		selectedTetris.transform.position = selectedTetrisLocation;
@@ -183,7 +171,7 @@ public class build : MonoBehaviour {
 	}
 
 	public void getNextTetris() {
-		Debug.Log("get next tetris");
+		//Debug.Log("get next tetris");
 		//print ("get next");
 		if (nextTetris == null) {
 			int tetrisID = Random.Range((int) 0, (int) 5);
@@ -193,6 +181,7 @@ public class build : MonoBehaviour {
 			selectedTetris = nextTetris;
 			selectedTetrisID = nextTetrisID;
 		}
+		PC.networkView.RPC("SetTetrisType", RPCMode.Others, selectedTetrisID);
 		selectedTetris.GetComponent<TetriminoHandler>().playerNum = PC.PLAYER_NUM;
 		selectedTetris.active = false;
 

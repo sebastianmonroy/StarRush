@@ -395,4 +395,8 @@ public class lemming : MonoBehaviour {
 		}
 		return "failed";
 	}
+
+	public void OnDestroy() {
+		PC.RemoveLemming(this.gameObject);
+	}
 }

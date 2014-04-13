@@ -123,7 +123,8 @@ public class build : MonoBehaviour {
 						break;
 					case Gesture.SPACE_BAR:
 						// SPACE_BAR gesture detected
-						//GameHandler.Instance.networkView.RPC("CreateLemming", RPCMode.All, PC.PLAYER_NUM);
+						PC.networkView.RPC("CreateLemming", RPCMode.Others);
+						SpawnLemming();
 						break;
 					default:
 						break;
@@ -190,8 +191,9 @@ public class build : MonoBehaviour {
 		nextTetris.active = false;
 	}
 
-	public void spawnLemming() {
+	public GameObject SpawnLemming() {
 		GameObject lemming = Instantiate(lemmingPrefab, this.transform.position, this.transform.rotation) as GameObject;
 		lemming.transform.parent = this.transform;
+		return lemming;
 	}
 }

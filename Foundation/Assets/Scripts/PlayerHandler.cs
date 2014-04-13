@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerHandler : MonoBehaviour {
 	public int PLAYER_NUM;
@@ -8,6 +9,8 @@ public class PlayerHandler : MonoBehaviour {
 	public GestureHandler GestureHandler;
 	public build BuildController;
 	public LemmingController LemmingController;
+
+	public List<GameObject> lemmings = new List<GameObject>();
 
 	// Use this for initialization
 	void Start () {
@@ -50,5 +53,16 @@ public class PlayerHandler : MonoBehaviour {
 		GameObject newTetris = BuildController.SpawnTetris();
 		newTetris.GetComponent<TetriminoHandler>().setPreview(false);
 		Debug.Log("Build: CreateTetris for Player " + PLAYER_NUM);
+	}
+
+	[RPC]
+	void CreateLemming() {
+		GameObject newLemming = BuildController.SpawnLemming();
+		this.lemmings.Add(newLemming);
+		Debug.Log("Build: CreateLemming for Player " + PLAYER_NUM);
+	}
+
+	public void RemoveLemming(GameObject lemming) {
+		this.lemmings.Remove(lemming);
 	}
 }

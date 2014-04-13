@@ -63,6 +63,18 @@ public class PlayerHandler : MonoBehaviour {
 	}
 
 	public void RemoveLemming(GameObject lemming) {
+		this.networkView.RPC("DestroyLemming", RPCMode.Others, lemmings.IndexOf(lemming));
 		this.lemmings.Remove(lemming);
+	}
+
+	[RPC]
+	void DestroyLemming(int lemIndex) {
+		Destroy(this.lemmings[lemIndex]);
+		this.lemmings.RemoveAt(lemIndex);
+	}
+
+	[RPC]
+	void SetLemmingLocation(Vector3 loc) {
+		this.lemmings[0].transform.position = loc;
 	}
 }

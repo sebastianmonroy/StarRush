@@ -307,11 +307,13 @@ public class lemming : MonoBehaviour {
 			CurrentDirection = -1 * this.transform.forward;
 			walkCount = 0;
 		}
+		PC.networkView.RPC("SetLemmingLocation", RPCMode.Others, newPosition);
 	}
 
 	private void climb() {
 		Vector3 newPosition = this.transform.position + Vector3.up * speed * Time.deltaTime;
 		this.transform.position = newPosition;
+		PC.networkView.RPC("SetLemmingLocation", RPCMode.Others, newPosition);
 	}
 
 	private void setRandomRotation() {

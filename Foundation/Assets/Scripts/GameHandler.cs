@@ -2,6 +2,10 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+public enum Game {
+	WAITING, STARTED, LOST, WON
+}
+
 public class GameHandler : MonoBehaviour {
 	public static GameHandler Instance;
 	public GameObject blockPrefab;
@@ -15,6 +19,7 @@ public class GameHandler : MonoBehaviour {
 	public int NUM_PLAYERS = 0;
 	public int PLAYER_NUM = 0;
 	public bool testBool = false;
+	public Game GAME_STATUS;
 
 	/*public class PlayerInfo
     {
@@ -40,6 +45,7 @@ public class GameHandler : MonoBehaviour {
 
 	void Start () {
 		Instance = this;
+		GAME_STATUS = Game.WAITING;
 		this.networkView.group = 31;		// GameHandler only sends data to other GameHandlers
         Network.isMessageQueueRunning = true;
 		FloorObject = GameObject.FindWithTag("Floor");
@@ -70,7 +76,7 @@ public class GameHandler : MonoBehaviour {
 		if (Network.player == networkPlayer) {
 			newPlayerObject.GetComponent<PlayerHandler>().isThisPlayer = true;
 		}
-		
+
 		//PlayerInfo pi = new PlayerInfo();
 		//pi.networkPlayer = networkPlayer;
 		//pi.playerObject = newPlayerObject;
@@ -81,6 +87,7 @@ public class GameHandler : MonoBehaviour {
 
 	public void AddPlayersToClients() {
 		if (Network.isServer) {
+			this.GAME_STATUS = Game.STARTED;
 			foreach (KeyValuePair<NetworkPlayer, GameObject> entry in playerList) {
 				//Debug.Log("Key = " + entry.Key + ", Value = " + entry.Value);
 				networkView.RPC("AddPlayerToClient", RPCMode.Others, entry.Key);
@@ -92,6 +99,7 @@ public class GameHandler : MonoBehaviour {
 	[RPC]
 	public void AddPlayerToClient(NetworkPlayer networkPlayer) {
 		if (Network.isClient) {
+			this.GAME_STATUS = Game.STARTED;
 			int playerNum = int.Parse("" + networkPlayer);
 			GameObject newPlayer = GameObject.Find("Player " + playerNum);
 			newPlayer.active = true;

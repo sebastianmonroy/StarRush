@@ -33,7 +33,7 @@ public class build : MonoBehaviour {
 	void Update () {
 		if (PC.isThisPlayer) {
 			// Only run Update if this is the current Player's build script.
-			if (PC != null && selectedTetris == null && PC.isThisPlayer) {
+			if (PC != null && selectedTetris == null && PC.isThisPlayer && GameHandler.Instance.GAME_STATUS == Game.STARTED) {
 				getNextTetris();
 			}
 

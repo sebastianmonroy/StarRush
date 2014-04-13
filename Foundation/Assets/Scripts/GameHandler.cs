@@ -51,6 +51,16 @@ public class GameHandler : MonoBehaviour {
 	}
 
 	[RPC]
+	public void AddPlayer(NetworkPlayer networkPlayer) {
+		NUM_PLAYERS++;
+		spawnOriginBlock(NUM_PLAYERS);
+		GameObject newPlayer = GameObject.Find("Player " + networkPlayer);
+		newPlayer.active = true;
+		playerList.Add(networkPlayer, newPlayer);
+		Debug.Log("AddPlayer: Player " + networkPlayer + " added.");
+	}
+
+	/*[RPC]
 	void RemovePlayer(NetworkPlayer player) {
 		GameObject playerObject;
 		playerList.TryGetValue(player, out playerObject);
@@ -152,6 +162,16 @@ public class GameHandler : MonoBehaviour {
 		}
 	}
 
+	[RPC]
+	void CreateLemming(int playerNum, NetworkMessageInfo info) {
+		//Debug.Log("sender = " + info.sender);
+		GameObject playerObject = GameObject.Find("Player " + playerNum);
+		//playerList.TryGetValue(info.sender, out playerObject);
+		build playerBuild = playerObject.GetComponent<build>();
+		playerBuild.spawnLemming();
+		Debug.Log("CreateLemming for Player " + playerNum);
+	}*/
+
 	public GameObject spawnOriginBlock(int playerNum) {
 		Vector3 corner = Vector3.zero;
 		switch (playerNum) {
@@ -179,17 +199,6 @@ public class GameHandler : MonoBehaviour {
 		originBlock.transform.parent = playerObject.transform;
 		playerObject.GetComponent<LemmingController>().addBlock(originBlock);
 		return originBlock;
-	}
-
-
-	[RPC]
-	void CreateLemming(int playerNum, NetworkMessageInfo info) {
-		//Debug.Log("sender = " + info.sender);
-		GameObject playerObject = GameObject.Find("Player " + playerNum);
-		//playerList.TryGetValue(info.sender, out playerObject);
-		build playerBuild = playerObject.GetComponent<build>();
-		playerBuild.spawnLemming();
-		Debug.Log("CreateLemming for Player " + playerNum);
 	}
 
 	private void setFloorTiling() {

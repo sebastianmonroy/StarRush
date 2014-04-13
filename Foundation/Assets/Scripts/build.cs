@@ -33,7 +33,7 @@ public class build : MonoBehaviour {
 	void Update () {
 		if (PC.isThisPlayer) {
 			// Only run Update if this is the current Player's build script.
-			if (PC != null && selectedTetris == null) {
+			if (PC != null && selectedTetris == null && PC.isThisPlayer) {
 				getNextTetris();
 			}
 
@@ -68,7 +68,7 @@ public class build : MonoBehaviour {
 								waitCount = 0;
 							} else if (hit.transform.gameObject.tag == "Prediction") {
 								// create tetrimino where the prediction is (if not colliding or out of bounds)
-								if (!selectedTetrimino.isColliding && !selectedTetrimino.isOutOfBounds) {
+								if (!selectedTetrimino.isColliding && !selectedTetrimino.isOutOfBounds && selectedBlock != null) {
 									selectedTetrimino.setPreview(false);
 									PC.LemmingController.addTetrimino(selectedTetris);
 									selectedBlock.GetComponent<block>().destroyPreview();
@@ -132,15 +132,6 @@ public class build : MonoBehaviour {
 			waitCount += Time.deltaTime;
 		}
 	}
-
-
-
-
-
-
-
-
-
 
 	public void CorrectPrediction() {
 		Vector3 dir = selectedPreviewBlock.GetComponent<block_preview>().direction;

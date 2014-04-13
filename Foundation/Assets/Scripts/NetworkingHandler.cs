@@ -3,10 +3,10 @@ using System.Collections;
 
 public class NetworkingHandler : MonoBehaviour {
 	private int MAX_PLAYERS = 2;
-    private string connectIP = "127.0.0.1";
+    private string connectIP = "192.168.1.5";
 	private int connectPort = 25001;
 	private int NUM_PLAYERS = 0;
-	private string playersField = "1";
+	private string playersField = "2";
 	private bool hostButton, stopButton, connectButton, disconnectButton;
 	private string debugLog = "";
 

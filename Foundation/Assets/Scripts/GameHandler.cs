@@ -51,18 +51,11 @@ public class GameHandler : MonoBehaviour {
 	}
 
 	void Update () {
-		if (Network.isServer) {
-			if (testBool) {
-				networkView.RPC("CreateLemming", RPCMode.All, 1);
-				testBool = false;
+		if (testBool) {
+			foreach (KeyValuePair<NetworkPlayer, GameObject> entry in playerList) {
+				Debug.Log("Key = " + entry.Key + ", Value = " + entry.Value);
 			}
-		} else {
-			if (testBool) {
-				foreach (KeyValuePair<NetworkPlayer, GameObject> entry in playerList) {
-					Debug.Log("Key = " + entry.Key + ", Value = " + entry.Value);
-				}
-				testBool = false;
-			}
+			testBool = false;
 		}
 	}
 

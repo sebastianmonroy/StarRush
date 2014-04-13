@@ -60,7 +60,7 @@ public class PlayerHandler : MonoBehaviour {
 	void CreateLemming() {
 		GameObject newLemming = BuildController.SpawnLemming();
 		this.lemmings.Add(newLemming);
-		newLemming.ID = lemmings.Count();
+		newLemming.GetComponent<lemming>().ID = lemmings.Count;
 		Debug.Log("Build: CreateLemming for Player " + PLAYER_NUM);
 	}
 

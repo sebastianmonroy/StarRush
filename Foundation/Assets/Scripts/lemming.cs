@@ -308,15 +308,15 @@ public class lemming : MonoBehaviour {
 			CurrentDirection = -1 * this.transform.forward;
 			walkCount = 0;
 		}
-		PC.networkView.RPC("SetSelectedLemming", RPCMode.Others, this.ID);
-		PC.networkView.RPC("SetLemmingLocation", RPCMode.Others, newPosition);
+		PC.networkView.RPC("SetSelectedLemming", RPCMode.OthersBuffered, this.ID);
+		PC.networkView.RPC("SetLemmingLocation", RPCMode.OthersBuffered, newPosition);
 	}
 
 	private void climb() {
 		Vector3 newPosition = this.transform.position + Vector3.up * speed * Time.deltaTime;
 		this.transform.position = newPosition;
-		PC.networkView.RPC("SetSelectedLemming", RPCMode.Others, this.ID);
-		PC.networkView.RPC("SetLemmingLocation", RPCMode.Others, newPosition);
+		PC.networkView.RPC("SetSelectedLemming", RPCMode.OthersBuffered, this.ID);
+		PC.networkView.RPC("SetLemmingLocation", RPCMode.OthersBuffered, newPosition);
 	}
 
 	private void setRandomRotation() {

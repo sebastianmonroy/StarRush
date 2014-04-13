@@ -66,6 +66,8 @@ public class GameHandler : MonoBehaviour {
 		}
 	}
 
+
+	[RPC]
 	public void AddPlayerToServer(NetworkPlayer networkPlayer) {
 		NUM_PLAYERS++;
 

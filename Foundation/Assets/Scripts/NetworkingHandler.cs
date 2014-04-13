@@ -12,7 +12,7 @@ public class NetworkingHandler : MonoBehaviour {
 
 	void OnGUI() {
 		if (Network.isServer) {
-			// Player started a server
+			// Player is hosting a server
 
 			GUILayout.Label("Hosting on " + Network.player.ipAddress);
 			GUILayout.Label(NUM_PLAYERS + " player(s) connected");
@@ -24,7 +24,7 @@ public class NetworkingHandler : MonoBehaviour {
 				Application.LoadLevel("game");
 			}
 		} else if (Network.isClient) {
-			// Player connected to a server
+			// Player is connected to a server
 
 			GUILayout.Label("Connected to " + Network.player.ipAddress);
 			GUILayout.Label("Debug: " + debugLog);

@@ -6,6 +6,7 @@ public class LemmingController : MonoBehaviour {
 	public GameObject lemmingPrefab;
 	public static int HIGHEST_LEVEL;
 	public static List<List<GameObject>> allBlocks = new List<List<GameObject>>();
+	public bool debug;
 
 	// Use this for initialization
 	void Start () {
@@ -14,7 +15,10 @@ public class LemmingController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		if (debug) {
+			printList();
+			debug = false;
+		}
 	}
 
 	public void addBlock(GameObject blockObject) {

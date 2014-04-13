@@ -33,7 +33,7 @@ public class build : MonoBehaviour {
 	void Update () {
 		if (PC.isThisPlayer) {
 			// Only run Update if this is the current Player's build script.
-			if (PC != null && selectedTetris == null && PC.isThisPlayer && GameHandler.Instance.GAME_STATUS == Game.STARTED) {
+			if (PC != null && selectedTetris == null && GameHandler.Instance.GAME_STATUS == Game.STARTED) {
 				getNextTetris();
 			}
 
@@ -128,8 +128,14 @@ public class build : MonoBehaviour {
 						break;
 				}
 			}
-
 			waitCount += Time.deltaTime;
+		} else {
+			// Prevent other players' blocks from rendering like predictions.
+			foreach (Transform t in this.transform) {
+				if (t.gameObject.tag == "Tetris") {
+					t.gameObject.GetComponent<TetriminoHandler>().setPreview(false);
+				}
+			}
 		}
 	}
 

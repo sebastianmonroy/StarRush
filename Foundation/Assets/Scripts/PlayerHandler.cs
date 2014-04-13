@@ -11,6 +11,7 @@ public class PlayerHandler : MonoBehaviour {
 	public LemmingController LemmingController;
 
 	public List<GameObject> lemmings = new List<GameObject>();
+	public GameObject selectedLemming;
 
 	// Use this for initialization
 	void Start () {
@@ -59,6 +60,7 @@ public class PlayerHandler : MonoBehaviour {
 	void CreateLemming() {
 		GameObject newLemming = BuildController.SpawnLemming();
 		this.lemmings.Add(newLemming);
+		newLemming.ID = lemmings.Count();
 		Debug.Log("Build: CreateLemming for Player " + PLAYER_NUM);
 	}
 
@@ -68,13 +70,20 @@ public class PlayerHandler : MonoBehaviour {
 	}
 
 	[RPC]
-	void DestroyLemming(int lemIndex) {
-		Destroy(this.lemmings[lemIndex]);
-		this.lemmings.RemoveAt(lemIndex);
+	void DestroyLemming(int lemID) {
+		Destroy(this.lemmings[lemID]);
+		this.lemmings.RemoveAt(lemID);
+	}
+
+	[RPC]
+	void SetSelectedLemming(int lemID) {
+		selectedLemming = lemmings[lemID];
 	}
 
 	[RPC]
 	void SetLemmingLocation(Vector3 loc) {
-		this.lemmings[0].transform.position = loc;
+		if (selectedLemming) {
+			selectedLemming.transform.position = loc;
+		}
 	}
 }

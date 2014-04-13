@@ -4,8 +4,8 @@ using System.Collections.Generic;
 
 public class LemmingController : MonoBehaviour {
 	public GameObject lemmingPrefab;
-	public static int HIGHEST_LEVEL;
-	public static List<List<GameObject>> allBlocks = new List<List<GameObject>>();
+	public int HIGHEST_LEVEL;
+	public List<List<GameObject>> allBlocks = new List<List<GameObject>>();
 	public bool debug;
 
 	// Use this for initialization
@@ -51,6 +51,7 @@ public class LemmingController : MonoBehaviour {
 	}
 
 	public void addTetrimino(GameObject tetriminoObject) {
+		Debug.Log("add tetrimino to Player " + this.gameObject.GetComponent<PlayerHandler>().PLAYER_NUM);
 		foreach (Transform t in tetriminoObject.transform) {
 			if (t.gameObject.tag == "Block") {
 				block block = t.gameObject.GetComponent<block>();

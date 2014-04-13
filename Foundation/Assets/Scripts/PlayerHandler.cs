@@ -28,8 +28,8 @@ public class PlayerHandler : MonoBehaviour {
 
 	// BUILD NETWORKING FUNCTIONS
 	[RPC]
-	void SetTetrisType(int tetrisID) {
-		BuildController.selectedTetrisID = tetrisID;
+	void SetTetrisType(int tetrisType) {
+		BuildController.selectedTetrisType = tetrisType;
 		Debug.Log("Build: SetTetrisType for Player " + PLAYER_NUM);
 	}
 

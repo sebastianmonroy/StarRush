@@ -7,22 +7,22 @@ public class build : MonoBehaviour {
 
 	public float waitDuration;				// How long to wait between acknowledging gestures
 	private float waitCount;
-	public GameObject nextTetris;
-	private int nextTetrisID;
-
+	
 	// CLIENT INFO
 	public GameObject selectedTetris;
 	private GameObject selectedBlock;
 	private GameObject selectedPreviewBlock;
+	public GameObject nextTetris;
+	private int nextTetrisType;
 
 	// SERVER INFO
-	public int selectedTetrisID;
+	public int selectedTetrisType;
 	public Vector3 selectedTetrisLocation;
 	public Quaternion selectedTetrisRotation; 
 
-	public bool debug;
-
 	public PlayerHandler PC;
+
+	public bool debug;
 
 	void Start () {
 		PC = this.transform.GetComponent<PlayerHandler>();
@@ -48,7 +48,8 @@ public class build : MonoBehaviour {
 						if (Physics.Raycast(PC.GestureHandler.CurrentRay, out hit)) {
 							if (debug) 	print("clicked on " + hit.transform.gameObject.tag);
 							TetriminoHandler selectedTetrimino = selectedTetris.GetComponent<TetriminoHandler>();
-							if (hit.transform.gameObject.tag == "Block") {
+							if (hit.transform.gameObject.tag == "Block" && hit.transform.gameObject.GetComponent<block>().PC == this.PC) {
+								// only able to click on blocks that belong to this player
 								if (selectedBlock != null) {
 									// remove previous preview if necessary
 									selectedBlock.GetComponent<block>().destroyPreview();
@@ -158,7 +159,7 @@ public class build : MonoBehaviour {
 
 	public GameObject SpawnTetris() {
 		//Debug.Log("create tetris");
-		selectedTetris = instantiateTetris(selectedTetrisID);
+		selectedTetris = instantiateTetris(selectedTetrisType);
 		selectedTetris.GetComponent<TetriminoHandler>().setPreview(false);
 		selectedTetris.transform.position = selectedTetrisLocation;
 		selectedTetris.transform.rotation = selectedTetrisRotation;
@@ -170,20 +171,21 @@ public class build : MonoBehaviour {
 	public void getNextTetris() {
 		//Debug.Log("get next tetris");
 		//print ("get next");
+		int tetrisType;
 		if (nextTetris == null) {
-			int tetrisID = Random.Range((int) 0, (int) 5);
-			selectedTetris = instantiateTetris(tetrisID);
-			selectedTetrisID = tetrisID;
+			tetrisType = Random.Range((int) 0, (int) 5);
+			selectedTetris = instantiateTetris(tetrisType);
+			selectedTetrisType = tetrisType;
 		} else {
 			selectedTetris = nextTetris;
-			selectedTetrisID = nextTetrisID;
+			selectedTetrisType = nextTetrisType;
 		}
-		PC.networkView.RPC("SetTetrisType", RPCMode.Others, selectedTetrisID);
+		PC.networkView.RPC("SetTetrisType", RPCMode.Others, selectedTetrisType);
 		selectedTetris.GetComponent<TetriminoHandler>().playerNum = PC.PLAYER_NUM;
 		selectedTetris.active = false;
 
-		nextTetrisID = Random.Range((int) 0, (int) 5);
-		nextTetris = instantiateTetris(nextTetrisID);
+		nextTetrisType = Random.Range((int) 0, (int) 5);
+		nextTetris = instantiateTetris(nextTetrisType);
 		nextTetris.GetComponent<TetriminoHandler>().playerNum = PC.PLAYER_NUM;
 		nextTetris.active = false;
 	}

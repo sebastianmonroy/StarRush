@@ -251,7 +251,6 @@ public class GameHandler : MonoBehaviour {
 
 		GameObject originBlock = Instantiate(blockPrefab, corner, this.transform.rotation) as GameObject;
 		originBlock.transform.localScale = Vector3.one * BLOCK_SIZE;
-		originBlock.GetComponent<block>().playerNum = playerNum;
 
 		GameObject playerObject = GameObject.Find("Player " + playerNum);
 		originBlock.transform.parent = playerObject.transform;

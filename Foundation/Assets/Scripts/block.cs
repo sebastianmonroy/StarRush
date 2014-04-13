@@ -11,8 +11,7 @@ public class block : MonoBehaviour {
 	private float decayPeriod;
 	public int level;
 	public bool debug;
-	private PlayerHandler PC;
-	public int playerNum;
+	public PlayerHandler PC;
 
 	// Use this for initialization
 	void Start () {

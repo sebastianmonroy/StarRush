@@ -67,8 +67,10 @@ public class GameHandler : MonoBehaviour {
 		int playerNum = int.Parse("" + networkPlayer);
 		GameObject newPlayerObject = GameObject.Find("Player " + playerNum);
 		newPlayerObject.active = true;
-		newPlayerObject.GetComponent<PlayerHandler>().isThisPlayer = true;
-
+		if (Network.player == networkPlayer) {
+			newPlayerObject.GetComponent<PlayerHandler>().isThisPlayer = true;
+		}
+		
 		//PlayerInfo pi = new PlayerInfo();
 		//pi.networkPlayer = networkPlayer;
 		//pi.playerObject = newPlayerObject;

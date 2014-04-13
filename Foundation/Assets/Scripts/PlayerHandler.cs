@@ -57,7 +57,7 @@ public class PlayerHandler : MonoBehaviour {
 	}
 
 	[RPC]
-	void CreateLemming() {
+	public void CreateLemming() {
 		GameObject newLemming = BuildController.SpawnLemming();
 		this.lemmings.Add(newLemming);
 		newLemming.GetComponent<lemming>().ID = lemmings.Count - 1;
@@ -70,7 +70,7 @@ public class PlayerHandler : MonoBehaviour {
 	}
 
 	[RPC]
-	void DestroyLemming(int lemID) {
+	public void DestroyLemming(int lemID) {
 		Destroy(this.lemmings[lemID]);
 		this.lemmings.RemoveAt(lemID);
 	}

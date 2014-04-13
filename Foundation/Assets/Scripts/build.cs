@@ -124,7 +124,7 @@ public class build : MonoBehaviour {
 					case Gesture.SPACE_BAR:
 						// SPACE_BAR gesture detected
 						PC.networkView.RPC("CreateLemming", RPCMode.Others);
-						SpawnLemming();
+						PC.CreateLemming();
 						break;
 					default:
 						break;

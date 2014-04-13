@@ -1,0 +1,97 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &100000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 400000}
+  - 114: {fileID: 11400002}
+  - 114: {fileID: 11400004}
+  - 114: {fileID: 11400000}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &400000
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -.116784588, y: .124422967, z: -.126862794}
+  m_LocalScale: {x: .00499999989, y: .00499999989, z: .00499999989}
+  m_Children: []
+  m_Father: {fileID: 0}
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f464b7a19a0e68342a11bbab64a8482a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lemmingPrefab: {fileID: 100000, guid: 11f39c81d9f62c841a8b3db5aa23530b, type: 2}
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a39843ae70fead4eb2115f348b6ec0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PLAYER_NUM: 0
+  isThisPlayer: 0
+  BuildController: {fileID: 0}
+  LemmingController: {fileID: 0}
+  GestureHandler: {fileID: 0}
+--- !u!114 &11400004
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3be1c73177737d0478ebac0be18dbd6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TblockPrefab: {fileID: 100012, guid: e6c017fdc43a07f44a9a88c776a6f46b, type: 2}
+  LblockPrefab: {fileID: 100012, guid: 8767f2cd11a79c242b4db5c8ffee8982, type: 2}
+  ZblockPrefab: {fileID: 100012, guid: fc1217172a4cedf4baa5f3c0f0620cb3, type: 2}
+  OblockPrefab: {fileID: 100012, guid: b200372ca1d0f4342bdb1c6984296b78, type: 2}
+  IblockPrefab: {fileID: 100012, guid: 61c6d9bc620a2234fbba9ca9ac9d52bf, type: 2}
+  lemmingPrefab: {fileID: 100000, guid: 11f39c81d9f62c841a8b3db5aa23530b, type: 2}
+  waitDuration: .300000012
+  nextTetris: {fileID: 0}
+  selectedTetris: {fileID: 0}
+  selectedTetrisID: 0
+  selectedTetrisLocation: {x: 0, y: 0, z: 0}
+  selectedTetrisRotation: {x: 0, y: 0, z: 0, w: 0}
+  debug: 0
+  PC: {fileID: 0}
+  GH: {fileID: 0}
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 100000}
+  m_IsPrefabParent: 1
+  m_IsExploded: 1

@@ -10,6 +10,7 @@ public class GameHandler : MonoBehaviour {
 	public static GameHandler Instance;
 	public GameObject blockPrefab;
 	public GameObject playerPrefab;
+	public GameObject starPrefab;
 	public static float BLOCK_SIZE = 15;
 	public GameObject FloorObject;
 	public static Vector3 FLOOR_MIN;
@@ -20,6 +21,7 @@ public class GameHandler : MonoBehaviour {
 	public int PLAYER_NUM = 0;
 	public bool testBool = false;
 	public Game GAME_STATUS;
+	private bool starFlag = true;
 
 	/*public class PlayerInfo
     {
@@ -58,6 +60,12 @@ public class GameHandler : MonoBehaviour {
 				Debug.Log("Key = " + entry.Key + ", Value = " + entry.Value);
 			}
 			testBool = false;
+		}
+
+		if (GAME_STATUS = Game.STARTED && starFlag) {
+			GameObject starObject = Instantiate(starPrefab, Vector3.zero, Quaternion.identity) as GameObject;
+			starObject.transform.position.y = BLOCK_SIZE * 10;
+			starFlag = false;
 		}
 	}
 

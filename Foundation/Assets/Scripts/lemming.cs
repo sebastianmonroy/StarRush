@@ -17,7 +17,7 @@ public class lemming : MonoBehaviour {
 	public bool debug;
 	public int level;
 	public int bestLevel;
-	PlayerHandler PC;
+	public PlayerHandler PC;
 	public int ID;
 
 	public enum Action {

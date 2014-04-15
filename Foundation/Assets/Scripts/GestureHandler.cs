@@ -94,6 +94,9 @@ public class GestureHandler : MonoBehaviour {
 					CurrentGesture = Gesture.NOTHING;
 				}
 			}
+		} else if (Input.touchCount == 3) {
+			delayCount = 0;
+			CurrentGesture = Gesture.SPACE_BAR;
 		} else if (Input.GetKeyDown(KeyCode.Space)) {
 			// PC: Spacebar
 			delayCount = 0;

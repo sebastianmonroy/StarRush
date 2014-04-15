@@ -7,15 +7,16 @@ public class NetworkingHandler : MonoBehaviour {
 	private int connectPort = 25001;
 	private int NUM_PLAYERS = 0;
 	private string playersField = "2";
-	private bool hostButton, stopButton, connectButton, disconnectButton;
+	private bool hostButton, stopButton, connectButton, disconnectButton, lemmingButton;
 	private string debugLog = "";
+	public PlayerHandler PC;
 
 	void OnGUI() {
 		if (Network.isServer) {
 			// Player is hosting a server
 
 			GUILayout.Label("Hosting on " + Network.player.ipAddress);
-			GUILayout.Label(NUM_PLAYERS + " player(s) connected");
+			GUILayout.Label(GameHandler.Instance.NUM_PLAYERS + " player(s) connected");
 			GUILayout.Label("Debug: " + debugLog);
 			stopButton = GUILayout.Button("Stop");
 

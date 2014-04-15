@@ -3,6 +3,7 @@ using System.Collections;
 
 public class build : MonoBehaviour {
 	public GameObject[] tetrisPrefabs;
+	//public GameObject simpleTetrisPrefab;
 	public GameObject lemmingPrefab;
 
 	public float waitDuration;				// How long to wait between acknowledging gestures
@@ -152,8 +153,9 @@ public class build : MonoBehaviour {
 		PC.networkView.RPC("SetTetrisRotation", RPCMode.Others, selectedTetrisRotation);
 	}
 
-	public GameObject instantiateTetris(int tetrisID) {
-		GameObject tetrisObject = Instantiate(tetrisPrefabs[tetrisID]) as GameObject;
+	public GameObject instantiateTetris(int tetrisType) {
+		tetrisType = 5;	// ONLY ALLOW SIMPLE TETRIS PREFAB
+		GameObject tetrisObject = Instantiate(tetrisPrefabs[tetrisType]) as GameObject;
 		tetrisObject.transform.parent = this.transform;
 		return tetrisObject;
 	}

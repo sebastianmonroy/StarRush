@@ -62,9 +62,9 @@ public class GameHandler : MonoBehaviour {
 			testBool = false;
 		}
 
-		if (GAME_STATUS = Game.STARTED && starFlag) {
+		if (GAME_STATUS == Game.STARTED && starFlag) {
 			GameObject starObject = Instantiate(starPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-			starObject.transform.position.y = BLOCK_SIZE * 10;
+			starObject.transform.position += Vector3.up * BLOCK_SIZE * 10;
 			starFlag = false;
 		}
 	}

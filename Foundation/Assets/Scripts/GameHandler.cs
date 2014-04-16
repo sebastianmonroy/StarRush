@@ -104,9 +104,10 @@ public class GameHandler : MonoBehaviour {
 			this.GAME_STATUS = Game.STARTED;
 			foreach (KeyValuePair<NetworkPlayer, GameObject> entry in playerList) {
 				//Debug.Log("Key = " + entry.Key + ", Value = " + entry.Value);
-				networkView.RPC("AddPlayerToClient", RPCMode.Others, entry.Key);
+				networkView.RPC("AddPlayerToClient", RPCMode.OthersBuffered, entry.Key);
 				spawnOriginBlock(int.Parse("" + entry.Key));
 			}
+			spawnOriginLemmings(PLAYER_NUM);
 		}
 	}
 
@@ -129,120 +130,14 @@ public class GameHandler : MonoBehaviour {
 			}
 
 			spawnOriginBlock(playerNum);
+			spawnOriginLemmings(playerNum);
 		}
 	}
 
-	/*[RPC]
-	void RemovePlayer(NetworkPlayer player) {
-		GameObject playerObject;
-		playerList.TryGetValue(player, out playerObject);
-		foreach (Transform t in playerObject.transform) {
-			Destroy(t.gameObject);
-		}
-	}
-
-	[RPC]
-	void SetTetrisType(int tetrisID, NetworkMessageInfo info) {
-		if (info.sender != Network.player || Network.isServer) {
-			//int playerNum = int.Parse("" + info.sender);
-			Debug.Log("playerNum = " + info.sender);
-			GameObject playerObject;// = GameObject.Find("Player " + playerNum);
-			playerList.TryGetValue(info.sender, out playerObject);
-			build playerBuild = playerObject.GetComponent<build>();
-			playerBuild.selectedTetrisID = tetrisID;
-			Debug.Log("SetTetrisType for Player " + info.sender);
-		}
-	}
-
-	[RPC]
-	void SetTetrisLocation(Vector3 loc, NetworkMessageInfo info) {
-		if (info.sender != Network.player || Network.isServer) {
-			int playerNum = int.Parse("" + info.sender);
-			GameObject playerObject = GameObject.Find("Player " + playerNum);
-			build playerBuild = playerObject.GetComponent<build>();
-			playerBuild.selectedTetrisLocation = loc;
-			Debug.Log("SetTetrisLocation for Player " + playerNum);
-		}
-	}
-
-	[RPC]
-	void SetTetrisRotation(Quaternion rot, NetworkMessageInfo info) {
-		if (info.sender != Network.player || Network.isServer) {
-			int playerNum = int.Parse("" + info.sender);
-			GameObject playerObject = GameObject.Find("Player " + playerNum);
-			build playerBuild = playerObject.GetComponent<build>();
-			playerBuild.selectedTetrisRotation = rot;
-			Debug.Log("SetTetrisRotation for Player " + playerNum);
-		}
-	}
-
-	[RPC]
-	void CreateTetris(NetworkMessageInfo info) {
-		if (info.sender != Network.player || Network.isServer) {
-			int playerNum = int.Parse("" + info.sender);
-			GameObject playerObject = GameObject.Find("Player " + playerNum);
-			build playerBuild = playerObject.GetComponent<build>();
-			GameObject newTetris = playerBuild.createTetris();
-			newTetris.GetComponent<TetriminoHandler>().setPreview(false);
-			Debug.Log("CreateTetris for Player " + playerNum);
-		}
-	}
-
-	[RPC]
-	public void AddPlayerToServer(NetworkPlayer networkPlayer) {
-		if (Network.isServer) {
-			if (playerList.ContainsKey(networkPlayer))
-	        {
-	            Debug.LogError("AddPlayerToServer: Player " + networkPlayer + " already exists!");
-	        } else {
-	        	NUM_PLAYERS++;
-				spawnOriginBlock(NUM_PLAYERS);
-				GameObject newPlayer = GameObject.Find("Player " + networkPlayer);
-				newPlayer.active = true;
-				playerList.Add(networkPlayer, newPlayer);
-				Debug.Log("AddPlayerToServer: Player " + networkPlayer + " added.");
-	        }
-	    }
-	}
-
-	public void AddPlayersToClients() {
-		if (Network.isServer) {
-			foreach (KeyValuePair<NetworkPlayer, GameObject> entry in playerList) {
-				//Debug.Log("Key = " + entry.Key + ", Value = " + entry.Value);
-				networkView.RPC("AddPlayerToClient", RPCMode.Others, entry.Key);
-			}
-		}
-	}
-
-	[RPC]
-	public void AddPlayerToClient(NetworkPlayer networkPlayer) {
-		if (Network.isClient) {
-			int playerNum = int.Parse("" + networkPlayer);
-			GameObject newPlayer = GameObject.Find("Player " + playerNum);
-			newPlayer.active = true;
-			spawnOriginBlock(playerNum);
-			playerList.Add(networkPlayer, newPlayer);
-
-			if (Network.player == networkPlayer) {
-				//PLAYER_NUM = int.Parse(networkPlayer);
-				newPlayer.GetComponent<PlayerHandler>().setAsPlayer();
-				PLAYER_NUM = playerNum;
-				Debug.Log("AddPlayerToClient: Player " + networkPlayer + " assigned.");
-			} else {
-				Debug.Log("AddPlayerToClient: Player " + networkPlayer + " added to Player " + Network.player + "'s playerList.");
-			}
-		}
-	}
-
-	[RPC]
-	void CreateLemming(int playerNum, NetworkMessageInfo info) {
-		//Debug.Log("sender = " + info.sender);
+	public void spawnOriginLemmings(int playerNum) {
 		GameObject playerObject = GameObject.Find("Player " + playerNum);
-		//playerList.TryGetValue(info.sender, out playerObject);
-		build playerBuild = playerObject.GetComponent<build>();
-		playerBuild.spawnLemming();
-		Debug.Log("CreateLemming for Player " + playerNum);
-	}*/
+		playerObject.GetComponent<PlayerHandler>().BuildController.SpawnLemmings(3);
+	}
 
 	public GameObject spawnOriginBlock(int playerNum) {
 		Vector3 corner = Vector3.zero;
@@ -262,13 +157,17 @@ public class GameHandler : MonoBehaviour {
 			default:
 				break;
 		}
+		GameObject playerObject = GameObject.Find("Player " + playerNum);
 
 		GameObject originBlock = Instantiate(blockPrefab, corner, this.transform.rotation) as GameObject;
 		originBlock.transform.localScale = Vector3.one * BLOCK_SIZE;
-
-		GameObject playerObject = GameObject.Find("Player " + playerNum);
 		originBlock.transform.parent = playerObject.transform;
 		playerObject.GetComponent<LemmingController>().addBlock(originBlock);
+
+		GameObject secondBlock = Instantiate(blockPrefab, corner + Vector3.up * BLOCK_SIZE, this.transform.rotation) as GameObject;
+		secondBlock.transform.localScale = Vector3.one * BLOCK_SIZE;
+		secondBlock.transform.parent = playerObject.transform;
+		playerObject.GetComponent<LemmingController>().addBlock(secondBlock);
 		return originBlock;
 	}
 

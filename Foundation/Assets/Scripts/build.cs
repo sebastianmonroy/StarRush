@@ -79,6 +79,10 @@ public class build : MonoBehaviour {
 									getNextTetris();
 									waitCount = 0;
 								}
+							} else if (hit.transform.gameObject.tag == "Lemming") {
+								if (hit.transform.gameObject.GetComponent<lemming>().PC == this.PC) {
+									hit.transform.position = hit.transform.parent.position;
+								}
 							}
 						}
 						break;
@@ -121,12 +125,12 @@ public class build : MonoBehaviour {
 							CorrectPrediction();
 							waitCount = 0;
 						}
-						break;*/
+						break;
 					case Gesture.SPACE_BAR:
 						// SPACE_BAR gesture detected
-						PC.networkView.RPC("CreateLemming", RPCMode.Others);
+						PC.networkView.RPC("CreateLemming", RPCMode.OthersBuffered);
 						PC.CreateLemming();
-						break;
+						break;*/
 					default:
 						break;
 				}
@@ -198,5 +202,13 @@ public class build : MonoBehaviour {
 		GameObject lemming = Instantiate(lemmingPrefab, this.transform.position, this.transform.rotation) as GameObject;
 		lemming.transform.parent = this.transform;
 		return lemming;
+	}
+
+	public void SpawnLemmings(int lemCount) {
+		for (int i = 0; i < lemCount; i++) {
+			//PC.networkView.RPC("CreateLemming", RPCMode.OthersBuffered);
+			GameObject lemming = Instantiate(lemmingPrefab, this.transform.position, this.transform.rotation) as GameObject;
+			lemming.transform.parent = this.transform;
+		}
 	}
 }

@@ -107,6 +107,8 @@ public class block : MonoBehaviour {
 		foreach (Vector3 v in directions) {
 			if (!Physics.Raycast(this.transform.position, v, out hit, this.renderer.bounds.size.x, 1 << 9)) {
 				potentials.Add(v);
+			} else if (hit.transform.parent.gameObject.tag == "Tetris" && hit.transform.parent.gameObject.GetComponent<TetriminoHandler>().isPreview) {
+				potentials.Add(v);
 			}
 		}
 
@@ -136,6 +138,7 @@ public class block : MonoBehaviour {
 		} else if (outOfBounds && GameHandler.isInBounds(this.transform.position)) {
 			outOfBounds = false;
 		}
+		//outOfBounds = false;	// TEMPORARY, NO OUT OF BOUNDS
 	}
 
 	public void checkCollisions() {

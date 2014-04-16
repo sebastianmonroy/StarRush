@@ -82,7 +82,7 @@ public class build : MonoBehaviour {
 							}
 						}
 						break;
-					case Gesture.SCROLL_LEFT:
+					/*case Gesture.SCROLL_LEFT:
 						// SCROLL_LEFT gesture detected
 						if (debug) 	print("scroll left");
 						if (selectedTetris.active && selectedTetris.GetComponent<TetriminoHandler>().isPreview) {
@@ -121,7 +121,7 @@ public class build : MonoBehaviour {
 							CorrectPrediction();
 							waitCount = 0;
 						}
-						break;
+						break;*/
 					case Gesture.SPACE_BAR:
 						// SPACE_BAR gesture detected
 						PC.networkView.RPC("CreateLemming", RPCMode.Others);
@@ -154,7 +154,6 @@ public class build : MonoBehaviour {
 	}
 
 	public GameObject instantiateTetris(int tetrisType) {
-		tetrisType = 5;	// ONLY ALLOW SIMPLE TETRIS PREFAB
 		GameObject tetrisObject = Instantiate(tetrisPrefabs[tetrisType]) as GameObject;
 		tetrisObject.transform.parent = this.transform;
 		return tetrisObject;
@@ -176,7 +175,7 @@ public class build : MonoBehaviour {
 		//print ("get next");
 		int tetrisType;
 		if (nextTetris == null) {
-			tetrisType = Random.Range((int) 0, (int) 5);
+			tetrisType = Random.Range((int) 0, (int) tetrisPrefabs.Length);
 			selectedTetris = instantiateTetris(tetrisType);
 			selectedTetrisType = tetrisType;
 		} else {
@@ -186,11 +185,13 @@ public class build : MonoBehaviour {
 		PC.networkView.RPC("SetTetrisType", RPCMode.Others, selectedTetrisType);
 		selectedTetris.GetComponent<TetriminoHandler>().playerNum = PC.PLAYER_NUM;
 		selectedTetris.active = false;
+		selectedTetris.GetComponent<TetriminoHandler>().setRandomRotation();
 
-		nextTetrisType = Random.Range((int) 0, (int) 5);
+		nextTetrisType = Random.Range((int) 0, (int) tetrisPrefabs.Length);
 		nextTetris = instantiateTetris(nextTetrisType);
 		nextTetris.GetComponent<TetriminoHandler>().playerNum = PC.PLAYER_NUM;
 		nextTetris.active = false;
+		nextTetris.GetComponent<TetriminoHandler>().setRandomRotation();
 	}
 
 	public GameObject SpawnLemming() {

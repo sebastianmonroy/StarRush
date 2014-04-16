@@ -133,12 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tetrisPrefabs:
-  - {fileID: 100012, guid: 61c6d9bc620a2234fbba9ca9ac9d52bf, type: 2}
-  - {fileID: 100012, guid: 8767f2cd11a79c242b4db5c8ffee8982, type: 2}
-  - {fileID: 100012, guid: b200372ca1d0f4342bdb1c6984296b78, type: 2}
-  - {fileID: 100012, guid: e6c017fdc43a07f44a9a88c776a6f46b, type: 2}
-  - {fileID: 100012, guid: fc1217172a4cedf4baa5f3c0f0620cb3, type: 2}
-  - {fileID: 100002, guid: 58f3e1075992b3b4fb4b50ef220b401a, type: 2}
+  - {fileID: 100006, guid: 7c5c0201599554b4c9476aa575b7c960, type: 2}
   lemmingPrefab: {fileID: 100000, guid: 11f39c81d9f62c841a8b3db5aa23530b, type: 2}
   waitDuration: .300000012
   selectedTetris: {fileID: 0}
@@ -332,12 +327,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tetrisPrefabs:
-  - {fileID: 100012, guid: 61c6d9bc620a2234fbba9ca9ac9d52bf, type: 2}
-  - {fileID: 100012, guid: 8767f2cd11a79c242b4db5c8ffee8982, type: 2}
-  - {fileID: 100012, guid: b200372ca1d0f4342bdb1c6984296b78, type: 2}
-  - {fileID: 100012, guid: e6c017fdc43a07f44a9a88c776a6f46b, type: 2}
-  - {fileID: 100012, guid: fc1217172a4cedf4baa5f3c0f0620cb3, type: 2}
-  - {fileID: 100002, guid: 58f3e1075992b3b4fb4b50ef220b401a, type: 2}
+  - {fileID: 100006, guid: 7c5c0201599554b4c9476aa575b7c960, type: 2}
   lemmingPrefab: {fileID: 100000, guid: 11f39c81d9f62c841a8b3db5aa23530b, type: 2}
   waitDuration: .300000012
   selectedTetris: {fileID: 0}
@@ -390,6 +380,32 @@ NetworkView:
   m_ViewID:
     m_ID: 4
     m_Type: 1
+--- !u!21 &317349664
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: qr_scaledMaterial
+  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: []
+  m_CustomRenderQueue: -1
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 2800000, guid: 946b5476951f4ba79b767f6fe5ce5af1, type: 3}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+    m_Floats: {}
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .820895553, g: .820895553, b: .820895553, a: 1}
 --- !u!1001 &421253882
 Prefab:
   m_ObjectHideFlags: 0
@@ -500,11 +516,11 @@ Prefab:
     - target: {fileID: 3300000, guid: 384a0d8cc71cef74a873b3353337ea2c, type: 2}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 1246392332}
+      objectReference: {fileID: 1481899545}
     - target: {fileID: 2300000, guid: 384a0d8cc71cef74a873b3353337ea2c, type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1898041235}
+      objectReference: {fileID: 317349664}
     - target: {fileID: 11400000, guid: 384a0d8cc71cef74a873b3353337ea2c, type: 2}
       propertyPath: mTrackableName
       value: qr
@@ -682,12 +698,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tetrisPrefabs:
-  - {fileID: 100012, guid: 61c6d9bc620a2234fbba9ca9ac9d52bf, type: 2}
-  - {fileID: 100012, guid: 8767f2cd11a79c242b4db5c8ffee8982, type: 2}
-  - {fileID: 100012, guid: b200372ca1d0f4342bdb1c6984296b78, type: 2}
-  - {fileID: 100012, guid: e6c017fdc43a07f44a9a88c776a6f46b, type: 2}
-  - {fileID: 100012, guid: fc1217172a4cedf4baa5f3c0f0620cb3, type: 2}
-  - {fileID: 100002, guid: 58f3e1075992b3b4fb4b50ef220b401a, type: 2}
+  - {fileID: 100006, guid: 7c5c0201599554b4c9476aa575b7c960, type: 2}
   lemmingPrefab: {fileID: 100000, guid: 11f39c81d9f62c841a8b3db5aa23530b, type: 2}
   waitDuration: .300000012
   selectedTetris: {fileID: 0}
@@ -803,7 +814,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visible: 0
---- !u!43 &1246392332
+--- !u!43 &1481899545
 Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -1353,12 +1364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tetrisPrefabs:
-  - {fileID: 100012, guid: 61c6d9bc620a2234fbba9ca9ac9d52bf, type: 2}
-  - {fileID: 100012, guid: 8767f2cd11a79c242b4db5c8ffee8982, type: 2}
-  - {fileID: 100012, guid: b200372ca1d0f4342bdb1c6984296b78, type: 2}
-  - {fileID: 100012, guid: e6c017fdc43a07f44a9a88c776a6f46b, type: 2}
-  - {fileID: 100012, guid: fc1217172a4cedf4baa5f3c0f0620cb3, type: 2}
-  - {fileID: 100002, guid: 58f3e1075992b3b4fb4b50ef220b401a, type: 2}
+  - {fileID: 100006, guid: 7c5c0201599554b4c9476aa575b7c960, type: 2}
   lemmingPrefab: {fileID: 100000, guid: 11f39c81d9f62c841a8b3db5aa23530b, type: 2}
   waitDuration: .300000012
   selectedTetris: {fileID: 0}
@@ -1411,32 +1417,6 @@ NetworkView:
   m_ViewID:
     m_ID: 5
     m_Type: 1
---- !u!21 &1898041235
-Material:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_Name: qr_scaledMaterial
-  m_Shader: {fileID: 10752, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: []
-  m_CustomRenderQueue: -1
-  m_SavedProperties:
-    serializedVersion: 2
-    m_TexEnvs:
-      data:
-        first:
-          name: _MainTex
-        second:
-          m_Texture: {fileID: 2800000, guid: 946b5476951f4ba79b767f6fe5ce5af1, type: 3}
-          m_Scale: {x: 1, y: 1}
-          m_Offset: {x: 0, y: 0}
-    m_Floats: {}
-    m_Colors:
-      data:
-        first:
-          name: _Color
-        second: {r: .820895553, g: .820895553, b: .820895553, a: 1}
 --- !u!1 &1933057068
 GameObject:
   m_ObjectHideFlags: 0
@@ -1503,7 +1483,7 @@ Transform:
   m_GameObject: {fileID: 1933057068}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 300, y: .0199999996, z: 300}
+  m_LocalScale: {x: 315, y: .0199999996, z: 315}
   m_Children:
   - {fileID: 159555885}
   - {fileID: 1589359615}
@@ -1551,7 +1531,7 @@ MeshFilter:
     type: 2}
   m_PrefabInternal: {fileID: 1063778326}
   m_GameObject: {fileID: 2041720322}
-  m_Mesh: {fileID: 1246392332}
+  m_Mesh: {fileID: 1481899545}
 --- !u!114 &2041720325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1597,7 +1577,7 @@ Renderer:
   m_LightmapIndex: 255
   m_LightmapTilingOffset: {x: 1, y: 1, z: 0, w: 0}
   m_Materials:
-  - {fileID: 1898041235}
+  - {fileID: 317349664}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 0
@@ -1629,12 +1609,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockPrefab: {fileID: 100000, guid: 71424508b1fe2104fa0937e94fa37abc, type: 2}
-  playerPrefab: {fileID: 100000, guid: 01dfc661c62144442ae9cd2fa7bcdaa1, type: 2}
+  starPrefab: {fileID: 100000, guid: 3c706a730fa3fd841a04d6e1937979bd, type: 2}
   FloorObject: {fileID: 1933057068}
   NUM_PLAYERS: 0
   PLAYER_NUM: 0
   testBool: 0
   GAME_STATUS: 0
+  STAR_HEIGHT: 10
 --- !u!148 &2041720330
 NetworkView:
   m_ObjectHideFlags: 0

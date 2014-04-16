@@ -62,6 +62,19 @@ public class TetriminoHandler : MonoBehaviour {
 		setZ(posZ);
 	}
 
+	public void setRandomRotation() {
+		int rotateCount;
+		
+		rotateCount = Random.Range((int) 0, (int) 4);
+		incrementXRotation(rotateCount);
+
+		rotateCount = Random.Range((int) 0, (int) 4);
+		incrementYRotation(rotateCount);
+
+		rotateCount = Random.Range((int) 0, (int) 4);
+		incrementZRotation(rotateCount);
+	}
+
 	public void incrementYRotation(int amount) {
 		//this.transform.rotation = new Vector3(this.transform.rotation.x, this.transform.rotation.y + 90*amount, this.transform.rotation.z);s
 		this.transform.Rotate(0, 90 * amount, 0, Space.World);

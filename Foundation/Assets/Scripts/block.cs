@@ -80,7 +80,9 @@ public class block : MonoBehaviour {
 	}
 
 	public void updateColor() {
-		this.renderer.material.color = new Color(1.0f - priority, 1.0f - priority, 1.0f, 1.0f);
+		if (PC.isThisPlayer) {
+			this.renderer.material.color = new Color(1.0f - priority, 1.0f - priority, 1.0f, 1.0f);
+		}
 	}
 	
 	public bool hasBlockAbove(){

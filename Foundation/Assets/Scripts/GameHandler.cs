@@ -9,7 +9,6 @@ public enum Game {
 public class GameHandler : MonoBehaviour {
 	public static GameHandler Instance;
 	public GameObject blockPrefab;
-	public GameObject playerPrefab;
 	public GameObject starPrefab;
 	public static float BLOCK_SIZE = 15;
 	public GameObject FloorObject;
@@ -22,6 +21,8 @@ public class GameHandler : MonoBehaviour {
 	public bool testBool = false;
 	public Game GAME_STATUS;
 	private bool starFlag = true;
+	public int STAR_HEIGHT = 10;
+	private bool winFlag = true;
 
 	/*public class PlayerInfo
     {
@@ -64,11 +65,20 @@ public class GameHandler : MonoBehaviour {
 
 		if (GAME_STATUS == Game.STARTED && starFlag) {
 			GameObject starObject = Instantiate(starPrefab, Vector3.zero, Quaternion.identity) as GameObject;
-			starObject.transform.position += Vector3.up * BLOCK_SIZE * 10;
+			starObject.transform.position += Vector3.up * BLOCK_SIZE * (STAR_HEIGHT + 0.5f);
 			starFlag = false;
+		} else if (GAME_STATUS == Game.WON && winFlag) {
+			this.networkView.RPC("AcknowledgeLoss", RPCMode.Others, Network.player);
+			winFlag = false;
+		} else if ((GAME_STATUS == Game.WON && !winFlag) || (GAME_STATUS == Game.LOST)) {
+			Time.timeScale = 0;
 		}
 	}
 
+	[RPC]
+	public void AcknowledgeLoss(NetworkPlayer networkPlayer) {
+		GAME_STATUS = Game.LOST;
+	}
 
 	[RPC]
 	public void AddPlayerToServer(NetworkPlayer networkPlayer) {

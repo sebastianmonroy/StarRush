@@ -23,7 +23,7 @@ public class GameHandler : MonoBehaviour {
 	private bool starFlag = true;
 	public int STAR_HEIGHT = 10;
 	private bool winFlag = true;
-
+	
 	/*public class PlayerInfo
     {
 		// Network name of the player
@@ -106,8 +106,8 @@ public class GameHandler : MonoBehaviour {
 				//Debug.Log("Key = " + entry.Key + ", Value = " + entry.Value);
 				networkView.RPC("AddPlayerToClient", RPCMode.OthersBuffered, entry.Key);
 				spawnOriginBlock(int.Parse("" + entry.Key));
+				//spawnOriginLemmings(int.Parse("" + entry.Key));
 			}
-			spawnOriginLemmings(PLAYER_NUM);
 		}
 	}
 
@@ -130,7 +130,7 @@ public class GameHandler : MonoBehaviour {
 			}
 
 			spawnOriginBlock(playerNum);
-			spawnOriginLemmings(playerNum);
+			//spawnOriginLemmings(playerNum);
 		}
 	}
 

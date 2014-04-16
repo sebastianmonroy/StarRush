@@ -108,8 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35e7c2a5ec42e6b4c9eda1b30ef9e9ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  winner: 0
   level: 0
+  resetButton: 0
 --- !u!122 &12200000
 Halo:
   m_ObjectHideFlags: 1
@@ -150,7 +150,7 @@ ParticleSystem:
   InitialModule:
     enabled: 1
     startLifetime:
-      scalar: 4
+      scalar: 8
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -183,7 +183,7 @@ ParticleSystem:
         m_PostInfinity: 2
       minMaxState: 0
     startSpeed:
-      scalar: 2
+      scalar: .25
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -310,7 +310,7 @@ ParticleSystem:
         rgba: 4278255611
       minMaxState: 0
     startSize:
-      scalar: 1
+      scalar: 2
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -395,7 +395,7 @@ ParticleSystem:
     enabled: 1
     m_Type: 0
     rate:
-      scalar: 1000
+      scalar: 400
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -449,7 +449,7 @@ ParticleSystem:
           outSlope: 0
           tangentMode: 0
         - time: 1
-          value: .222222209
+          value: .370370358
           inSlope: 0
           outSlope: 0
           tangentMode: 0

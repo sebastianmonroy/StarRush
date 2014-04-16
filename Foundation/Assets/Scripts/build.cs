@@ -8,6 +8,7 @@ public class build : MonoBehaviour {
 
 	public float waitDuration;				// How long to wait between acknowledging gestures
 	private float waitCount;
+	private bool spawnLemmingsFlag = true;
 	
 	// CLIENT INFO
 	public GameObject selectedTetris;
@@ -36,6 +37,15 @@ public class build : MonoBehaviour {
 			// Only run Update if this is the current Player's build script.
 			if (PC != null && selectedTetris == null && GameHandler.Instance.GAME_STATUS == Game.STARTED) {
 				getNextTetris();
+			}
+
+			// Spawn original lemmings
+			if (GameHandler.Instance.GAME_STATUS == Game.STARTED && spawnLemmingsFlag) {
+				for (int i = 0; i < 3; i++) {
+					PC.networkView.RPC("CreateLemming", RPCMode.OthersBuffered);
+					PC.CreateLemming();	
+				}
+				spawnLemmingsFlag = false;
 			}
 
 			if (waitCount >= waitDuration && PC.GestureHandler != null) {
@@ -206,7 +216,7 @@ public class build : MonoBehaviour {
 
 	public void SpawnLemmings(int lemCount) {
 		for (int i = 0; i < lemCount; i++) {
-			//PC.networkView.RPC("CreateLemming", RPCMode.OthersBuffered);
+			PC.networkView.RPC("CreateLemming", RPCMode.OthersBuffered);
 			GameObject lemming = Instantiate(lemmingPrefab, this.transform.position, this.transform.rotation) as GameObject;
 			lemming.transform.parent = this.transform;
 		}
